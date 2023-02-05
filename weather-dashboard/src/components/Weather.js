@@ -26,6 +26,32 @@ function Weather() {
     fetchApi();
   };
 
+  //converted as per indian time
+  function showSunriseTime() {
+    let unixDate = data.sys.sunrise;
+    const d = new Date(unixDate * 1000);
+    const dayTime = d.toLocaleString(d.getDate());
+    const time = dayTime.slice(-10, -6);
+    return time;
+  }
+  //converted as per indian time
+  function showSunsetTime() {
+    let unixDate = data.sys.sunset;
+    const d = new Date(unixDate * 1000);
+
+    const dayTime = d.toLocaleString(d.getDate());
+    const time = dayTime.slice(-10, -6);
+    return time;
+  }
+  //converted as per indian time
+  function showCurrentDay() {
+    let unixDate = data.sys.sunrise;
+    const d = new Date(unixDate * 1000);
+    const dayTime = d.toLocaleString(d.getDate());
+    const day = dayTime.slice(0, 8);
+    return day;
+  }
+
   return (
     <div className="container mx-auto">
       {/* Navbar */}
@@ -162,7 +188,7 @@ function Weather() {
                     alt="Sunrise"
                     className="w-10 h-10 block"
                   ></img>
-                  <p>Sunrise: 06.45</p>
+                  <p>Sunrise: {showSunriseTime()}</p>
                 </div>
                 <div id="sunset" className="flex justify-center flex-col">
                   <img
@@ -170,8 +196,11 @@ function Weather() {
                     alt="Sunset"
                     className="w-10 h-10 block"
                   ></img>
-                  <p>Sunset: 06.30</p>
+                  <p>Sunset: {showSunsetTime()}</p>
                 </div>
+              </li>
+              <li>
+                <p>{showCurrentDay()}</p>
               </li>
             </ul>
           </div>
