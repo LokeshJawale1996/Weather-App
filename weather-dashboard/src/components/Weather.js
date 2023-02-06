@@ -8,6 +8,7 @@ import "./weather.css";
 function Weather() {
   const [select, setSelect] = useState("");
   const [data, setData] = useState(null);
+ 
 
   //as per we change value on dropdown it get setted in select state
   const handleChange = (e) => {
@@ -19,19 +20,25 @@ function Weather() {
   };
   //after clicking on add it executes
   const handleClick = () => {
-    console.log("hi");
-
     const fetchApi = async () => {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${select}&units=metric&appid=3f256663324712b90cf713a480e25f6d
           `;
       const response = await fetch(url);
       const resJson = await response.json();
       //we are setting response in state
+      // console.log(resJson.name)
       setData(resJson);
+      //fixed the issue when we pass city which is inValid
+      if (resJson.name === select) {
+        console.log("yessssss");
+      } else {
+        alert(`OOps Something Went Wrong!!!`);
+        window.location.reload(false);
+      }
     };
     setTimeout(() => {
       fetchApi();
-    }, 1000);
+    }, 200);
   };
 
   return (
