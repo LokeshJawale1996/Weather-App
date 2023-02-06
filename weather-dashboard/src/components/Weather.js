@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Logo from "./images/weather1.png";
 import Sunrise from "./images/sunrise.png";
 import Sunset from "./images/sunset.png";
+import "./weather.css";
 // import Background from "./images/background.jpg"
 
 function Weather() {
@@ -12,9 +13,14 @@ function Weather() {
   const handleChange = (e) => {
     setSelect(e.target.value);
   };
+
+  const reLoad = () => {
+    window.location.reload();
+  };
   //after clicking on add it executes
   const handleClick = () => {
-    // console.log(select);
+    console.log("hi");
+
     const fetchApi = async () => {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${select}&units=metric&appid=3f256663324712b90cf713a480e25f6d
           `;
@@ -23,37 +29,13 @@ function Weather() {
       //we are setting response in state
       setData(resJson);
     };
-    fetchApi();
+    setTimeout(() => {
+      fetchApi();
+    }, 1000);
   };
 
-  //converted as per indian time
-  function showSunriseTime() {
-    let unixDate = data.sys.sunrise;
-    const d = new Date(unixDate * 1000);
-    const dayTime = d.toLocaleString(d.getDate());
-    const time = dayTime.slice(-10, -6);
-    return time;
-  }
-  //converted as per indian time
-  function showSunsetTime() {
-    let unixDate = data.sys.sunset;
-    const d = new Date(unixDate * 1000);
-
-    const dayTime = d.toLocaleString(d.getDate());
-    const time = dayTime.slice(-10, -6);
-    return time;
-  }
-  //converted as per indian time
-  function showCurrentDay() {
-    let unixDate = data.sys.sunrise;
-    const d = new Date(unixDate * 1000);
-    const dayTime = d.toLocaleString(d.getDate());
-    const day = dayTime.slice(0, 8);
-    return day;
-  }
-
   return (
-    <div className="container mx-auto">
+    <div className="bg-slate-200 max-h-full" id="weather">
       {/* Navbar */}
       <div className="bg-gradient-to-r from-slate-300 to-gray-200">
         <div className="flex justify-between text-black border-b-2 py-2 max-w-6xl mx-auto">
@@ -64,13 +46,17 @@ function Weather() {
               </h1>
               <img src={Logo} alt="logo" className="w-16 h-10 px-2" />
             </div>
-            <div className="flex">
-              <div className="mt-2 px-4">
-                <label className="pr-4">Select City:</label>
+            <div className="flex gap-x-4">
+              <div className="flex gap-x-4 justify-items-center">
+                <label className="pt-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Select City:
+                </label>
                 <select
-                  className="border border-1 border-black w-36 h-8"
+                  className="h-10 w-100 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={handleChange}
                 >
+                  <option selected>Choose a City</option>
+
                   <option className="border border-1 border-black" value="Pune">
                     Pune
                   </option>
@@ -133,6 +119,24 @@ function Weather() {
                   add
                 </button>
               </div>
+              <div className="flex">
+                <div className="px-4">
+                  <input
+                    type="search"
+                    className="h-10 w-100 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-center placeholder:text-center"
+                    onChange={handleChange}
+                    placeholder="Enter City & Search"
+                  />
+                </div>
+                <div>
+                  <button
+                    onClick={handleClick}
+                    className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -140,6 +144,7 @@ function Weather() {
             <button
               type="button"
               className="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              onClick={reLoad}
             >
               reload
             </button>
@@ -150,10 +155,12 @@ function Weather() {
       {/* Data/Cards */}
 
       {!data ? (
-        <p>Please Select City Name To See ITs Weather Condition</p>
+        <p className="flex text-center h-full justify-center justify-items-center py-64 bg-slate-200 text-3xl">
+          Please Select City Name Or Search To See It's Weather Condition
+        </p>
       ) : (
-        <div className="grid grid-cols-3 mx-auto px-6 py-3 my-3">
-          <div className="max-h-screen w-full h-full max-w-sm p-4 border-4 border-gray-200 rounded-3xl shadow sm:p-6 dark:bg-gray-800 dark:border-gray-900  bg-gradient-to-r from-cyan-100 to-blue-300">
+        <div className="mx-auto px-12 py-3 my-3  max-w-xl max-h-full">
+          <div className="max-h-full  p-4 border-4 border-gray-400 rounded-3xl shadow sm:p-6 dark:bg-gray-800 dark:border-gray-900  bg-gradient-to-r from-cyan-100 to-blue-300">
             <ul>
               <li
                 id="name-city-btn"
@@ -188,7 +195,10 @@ function Weather() {
                     alt="Sunrise"
                     className="w-10 h-10 block"
                   ></img>
-                  <p>Sunrise: {showSunriseTime()}</p>
+                  <p>
+                    Sunrise:{" "}
+                    {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}
+                  </p>
                 </div>
                 <div id="sunset" className="flex justify-center flex-col">
                   <img
@@ -196,20 +206,23 @@ function Weather() {
                     alt="Sunset"
                     className="w-10 h-10 block"
                   ></img>
-                  <p>Sunset: {showSunsetTime()}</p>
+                  <p>
+                    Sunset:{" "}
+                    {new Date(data.sys.sunset * 1000).toLocaleTimeString()}
+                  </p>
                 </div>
               </li>
               <li>
-                <p>{showCurrentDay()}</p>
+                <p>{new Date(data.sys.sunrise * 1000).toLocaleDateString()}</p>
               </li>
             </ul>
           </div>
-          <div className="bg-white max-h-screen w-full h-full max-w-sm p-4 border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+          {/* <div className="bg-white max-h-screen w-full h-full max-w-sm p-4 border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             Two
           </div>
           <div className="bg-white max-h-screen w-full h-full max-w-sm p-4 border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             Three
-          </div>
+          </div> */}
         </div>
       )}
     </div>
