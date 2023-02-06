@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import Logo from "./images/weather1.png";
 import Sunrise from "./images/sunrise.png";
 import Sunset from "./images/sunset.png";
+import Delete from "./images/delete.jpg";
 import "./weather.css";
+
 // import Background from "./images/background.jpg"
 
 function Weather() {
   const [select, setSelect] = useState("");
   const [data, setData] = useState(null);
- 
 
   //as per we change value on dropdown it get setted in select state
   const handleChange = (e) => {
     setSelect(e.target.value);
   };
 
+  //after clicking on reload
   const reLoad = () => {
     window.location.reload();
   };
@@ -39,6 +41,26 @@ function Weather() {
     setTimeout(() => {
       fetchApi();
     }, 200);
+  };
+
+  const DeleteWeather = () => {
+    window.location.reload();
+  };
+
+  const handleConvert = () => {
+    let celcius = document.getElementById("c");
+    let faren = document.getElementById("f");
+
+    if (
+      !faren.classList.contains("hidden") &&
+      celcius.classList.contains("hidden")
+    ) {
+      faren.classList.add("hidden");
+      celcius.classList.remove("hidden");
+    } else {
+      faren.classList.remove("hidden");
+      celcius.classList.add("hidden");
+    }
   };
 
   return (
@@ -163,7 +185,7 @@ function Weather() {
 
       {!data ? (
         <p className="flex text-center h-full justify-center justify-items-center py-64 bg-slate-200 text-3xl">
-          Please Select City Name Or Search To See It's Weather Condition
+          Please Enter Valid City!
         </p>
       ) : (
         <div className="mx-auto px-12 py-3 my-3  max-w-xl max-h-full">
@@ -171,27 +193,49 @@ function Weather() {
             <ul>
               <li
                 id="name-city-btn"
-                className="flex gap-x-2 mx-auto justify-center text-xl border-b-2 border-blue-400 pb-2"
+                className="flex gap-x-2 mx-auto justify-between text-xl border-b-2 border-blue-400 pb-2 font-xl font-bold text-gray-900 dark:text-white"
               >
-                <p>{data.name}</p>
-                <p>({data.sys.country})</p>
+                <div className="flex gap-x-4">
+                  <p>{data.name},</p>
+                  <p>({data.sys.country})</p>
+                </div>
+                <div className="text-right">
+                  <button onClick={DeleteWeather}>
+                    <img src={Delete} className="h-5 w-5" />
+                  </button>
+                </div>
               </li>
               <li
                 id="weather-condition"
                 className="font-semi-bold text-lg text-right py-4"
               >
-                <p>Clear Sky</p>
+                {/* <p>Clear Sky</p> */}
               </li>
               <li className="temp text-6xl font-medium py-4 text-orange-400">
                 <p className="">
-                  {data.main.temp} <span className="text-4xl">°C</span>
+                  <span className="text-6xl hidden" id="f">
+                    {((data.main.temp * 9) / 5 + 32).toFixed(2)} F
+                  </span>
+                  <span className="text-6xl" id="c">
+                    {" "}
+                    {data.main.temp} °C
+                  </span>
                 </p>
+                <button
+                  className="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                  onClick={handleConvert}
+                >
+                  Convert
+                </button>
               </li>
-              <li id="feels_temp" className="text-lg">
+              <li
+                id="feels_temp"
+                className="text-xl font-bold text-gray-900 dark:text-white"
+              >
                 Feels Like: {data.main.feels_like} °C
               </li>
 
-              <li className="minMaxTemp flex gap-x-2 mx-auto justify-center text-base py-2">
+              <li className="minMaxTemp flex gap-x-2 mx-auto justify-center text-sm py-2 font-normal text-gray-900 dark:text-white">
                 <p>Min: {data.main.temp_min} °c</p>
                 <p>Max: {data.main.temp_max} °c</p>
               </li>
@@ -200,10 +244,11 @@ function Weather() {
                   <img
                     src={Sunrise}
                     alt="Sunrise"
-                    className="w-10 h-10 block"
+                    className="w-10 h-10 mx-auto"
                   ></img>
+                  <p>Sunrise</p>
                   <p>
-                    Sunrise:{" "}
+                    {" "}
                     {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}
                   </p>
                 </div>
@@ -211,16 +256,19 @@ function Weather() {
                   <img
                     src={Sunset}
                     alt="Sunset"
-                    className="w-10 h-10 block"
+                    className="w-10 h-10 block mx-auto"
                   ></img>
+                  <p>Sunset</p>
                   <p>
-                    Sunset:{" "}
+                    {" "}
                     {new Date(data.sys.sunset * 1000).toLocaleTimeString()}
                   </p>
                 </div>
               </li>
               <li>
-                <p>{new Date(data.sys.sunrise * 1000).toLocaleDateString()}</p>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">
+                  {new Date(data.sys.sunrise * 1000).toLocaleDateString()}
+                </p>
               </li>
             </ul>
           </div>
