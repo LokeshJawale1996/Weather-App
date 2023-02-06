@@ -4,6 +4,7 @@ import Sunrise from "./images/sunrise.png";
 import Sunset from "./images/sunset.png";
 import Delete from "./images/delete.jpg";
 import "./weather.css";
+import Data from "../config.json";
 
 // import Background from "./images/background.jpg"
 
@@ -34,7 +35,7 @@ function Weather() {
       if (resJson.name === select) {
         console.log("yessssss");
       } else {
-        alert(`OOps Something Went Wrong!!!`);
+        alert(`please Enter Valid City!!!`);
         window.location.reload(false);
       }
     };
@@ -89,54 +90,15 @@ function Weather() {
                   <option className="border border-1 border-black" value="Pune">
                     Pune
                   </option>
-                  <option
-                    className="border border-1 border-black"
-                    value="Mumbai"
-                  >
-                    Mumbai
-                  </option>
-                  <option
-                    className="border border-1 border-black"
-                    value="Jalgaon"
-                  >
-                    Jalgaon
-                  </option>
-                  <option
-                    className="border border-1 border-black"
-                    value="Bhalod"
-                  >
-                    Bhalod
-                  </option>
-                  <option
-                    className="border border-1 border-black"
-                    value="London"
-                  >
-                    London
-                  </option>
-                  <option
-                    className="border border-1 border-black"
-                    value="Delhi"
-                  >
-                    Delhi
-                  </option>
-                  <option
-                    className="border border-1 border-black"
-                    value="Texas"
-                  >
-                    Texas
-                  </option>
-                  <option
-                    className="border border-1 border-black"
-                    value="Thane"
-                  >
-                    Thane
-                  </option>
-                  <option
-                    className="border border-1 border-black"
-                    value="Ranchi"
-                  >
-                    Ranchi
-                  </option>
+
+                  {Data.map((city, index) => (
+                    <option
+                      className="border border-1 border-black"
+                      key={index}
+                    >
+                      {city.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -185,7 +147,7 @@ function Weather() {
 
       {!data ? (
         <p className="flex text-center h-full justify-center justify-items-center py-64 bg-slate-200 text-3xl">
-          Please Enter Valid City!
+          Please Select City Name OR Enter City To See It's Weather Condition!
         </p>
       ) : (
         <div className="mx-auto px-12 py-3 my-3  max-w-xl max-h-full">
@@ -199,24 +161,46 @@ function Weather() {
                   <p>{data.name},</p>
                   <p>({data.sys.country})</p>
                 </div>
+
                 <div className="text-right">
                   <button onClick={DeleteWeather}>
                     <img src={Delete} className="h-5 w-5" />
                   </button>
                 </div>
               </li>
+              <li className="">
+                <div className="flex justify-between">
+                  <div className="">
+                    <div className="px-8">
+                      <img
+                        src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                        className="h-16 w-16"
+                      />
+                    </div>
+                    <div className="text-left px-8">
+                      <p className="">{data.weather[0].description}</p>
+                    </div>
+                  </div>
+                  <div className="px-4 py-4">
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                      {new Date(data.sys.sunrise * 1000).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              </li>
+
               <li
                 id="weather-condition"
                 className="font-semi-bold text-lg text-right py-4"
               >
                 {/* <p>Clear Sky</p> */}
               </li>
-              <li className="temp text-6xl font-medium py-4 text-orange-400">
+              <li className="temp text-5xl font-medium pb-4 text-orange-400">
                 <p className="">
-                  <span className="text-6xl hidden" id="f">
+                  <span className="text-5xl hidden" id="f">
                     {((data.main.temp * 9) / 5 + 32).toFixed(2)} F
                   </span>
-                  <span className="text-6xl" id="c">
+                  <span className="text-5xl" id="c">
                     {" "}
                     {data.main.temp} °C
                   </span>
@@ -230,7 +214,7 @@ function Weather() {
               </li>
               <li
                 id="feels_temp"
-                className="text-xl font-bold text-gray-900 dark:text-white"
+                className="text-xl font-semibold text-gray-900 dark:text-white"
               >
                 Feels Like: {data.main.feels_like} °C
               </li>
@@ -246,9 +230,8 @@ function Weather() {
                     alt="Sunrise"
                     className="w-10 h-10 mx-auto"
                   ></img>
-                  <p>Sunrise</p>
                   <p>
-                    {" "}
+                    Sunrise:
                     {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}
                   </p>
                 </div>
@@ -258,18 +241,15 @@ function Weather() {
                     alt="Sunset"
                     className="w-10 h-10 block mx-auto"
                   ></img>
-                  <p>Sunset</p>
                   <p>
-                    {" "}
+                    Sunset:{" "}
                     {new Date(data.sys.sunset * 1000).toLocaleTimeString()}
                   </p>
                 </div>
               </li>
-              <li>
-                <p className="text-lg font-bold text-gray-900 dark:text-white">
-                  {new Date(data.sys.sunrise * 1000).toLocaleDateString()}
-                </p>
-              </li>
+              {/* <li>
+                
+              </li> */}
             </ul>
           </div>
           {/* <div className="bg-white max-h-screen w-full h-full max-w-sm p-4 border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
