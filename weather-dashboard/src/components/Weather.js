@@ -13,7 +13,7 @@ function Weather() {
   const [data, setData] = useState(null);
   const [completeData, setCompleteData] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
-  const [showHome, setShowHome] = useState(true);
+  const [showHome] = useState(true);
 
   //as per we change value on dropdown it get setted in select state
   const handleChange = (e) => {

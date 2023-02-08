@@ -1,14 +1,9 @@
 # Getting Started with Create React App
 
-
-## Available Scripts
-
 In the project directory, you can run:
 
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+to start the project
 
 ## Project Details
 
@@ -18,3 +13,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 #### If you select city and after displaying data on UI you again select or search another city then on You are able to see that city weather as per your next search or selection on UI
 
+
+## reference images
+
+### Initial UI before selecting cityOR searching city
+ <img  width="800" src="https://github.com/LokeshJawale1996/easfdd/blob/main/images/weather1.jpg.png">
+
+### UI after selecting city from dropdown OR searching
+<img  width="800" src="https://github.com/LokeshJawale1996/easfdd/blob/main/images/weather2.jpg.png">
